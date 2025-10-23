@@ -1,16 +1,39 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { Counter } from "../target/types/counter";
+import { CounterAnchor } from "../target/types/counter_anchor";
 
-describe("counter", () => {
-  // Configure the client to use the local cluster.
-  anchor.setProvider(anchor.AnchorProvider.env());
+describe("Counter Program Test", () => {
+  const provider = anchor.AnchorProvider.env();
+  anchor.setProvider(provider);
 
-  const program = anchor.workspace.counter as Program<Counter>;
+  const program = anchor.workspace.CounterAnchor as Program<CounterAnchor>;
 
-  it("Is initialized!", async () => {
-    // Add your test here.
-    const tx = await program.methods.initialize().rpc();
-    console.log("Your transaction signature", tx);
+  const counter = anchor.web3.Keypair.generate();
+
+  it("Initialize the counter", async () => {
+    await program.methods
+      .initializeCounter()
+      .accounts({
+        payer: provider.wallet.publicKey,
+        counter: counter.publicKey,
+      })
+      .signers([counter])
+      .rpc();
+
+    console.log("✅ Counter account created!");
+  });
+
+  it("Increment the counter", async () => {
+    await program.methods
+      .increment()
+      .accounts({
+        counter: counter.publicKey,
+      })
+      .rpc();
+
+    const counterAccount = await program.account.counter.fetch(
+      counter.publicKey
+    );
+    console.log("🔢 Current counter value:", counterAccount.count.toString());
   });
 });
