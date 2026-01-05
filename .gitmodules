@@ -19,3 +19,12 @@
 [submodule "dragonball-nfts"]
 	path = dragonball-nfts
 	url = https://github.com/Harshbhargav45/dragonball-nfts.git
+[submodule "Ackee"]
+	path = Ackee
+	url = https://github.com/Harshbhargav45/Ackee.git
+[submodule "adv_task1"]
+	path = adv_task1
+	url = https://github.com/Harshbhargav45/adv_task1.git
+[submodule "poke-chess"]
+	path = poke-chess
+	url = https://github.com/Harshbhargav45/poke-chess.git
